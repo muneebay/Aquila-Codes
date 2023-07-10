@@ -1,0 +1,77 @@
+map = robotics.OccupancyGrid(bound,bound,15); %resolution is the number of pixels in one cell; no needs to consider it below
+show (map);
+hold on
+
+%% obstacles
+cntx = bound/2;
+cnty = bound/2;
+s = cnty/0.1;
+A(1,s) = cntx-1;
+A(1:s) = cntx;
+B = cnty:0.1:bound-0.1;
+C = [A; B];
+C = transpose(C);
+A = A/2.5;
+D = [B; A];
+D = transpose(D);
+% q = (bound/0.1) - 10;
+q = (bound/0.1);
+E(1,q) = bound-1;
+E(1:q) = 0.1;
+I(1,q) = bound-1;
+I(1:q) = bound-0.1;
+% F = 1:0.1:bound-0.1;
+F = 0:0.1:bound-0.1;
+H = [E;F];
+H = transpose(H);
+G = [I;F];
+G = transpose(G);
+J = [F;I];
+J = transpose(J);
+W = [F;E];
+W = transpose(W);
+d_ = 0;
+
+S = 4:0.1:7;
+S_ = 13:0.1:16;
+S__ = [S;S_];
+obs_1 = transpose(S__);
+
+Y = 5.5:0.1:16;
+Y_ = 5.5:0.1:16;
+Y__ = [Y;Y_];
+obs_2 = transpose(Y__);
+
+T = 12:0.1:16;
+T_ = 4:0.1:8;
+T__ = [T;T_];
+obs_3 = transpose(T__);
+
+setOccupancy(map, obs_1, 1)
+setOccupancy(map, obs_2, 1)
+setOccupancy(map, obs_3, 1)
+
+
+% setOccupancy(map, W, 1)
+
+% % upper vertical
+% setOccupancy(map, C, 1)
+
+% H left vertical
+setOccupancy(map, H, 1)
+% G right vertical
+setOccupancy(map, G, 1)
+% J upper horizontal
+setOccupancy(map, J, 1)
+setOccupancy(map, W, 1)
+
+setOccupancy(map, obs_1, 1)
+
+
+
+%% tunnel obstacle
+% right horizontal
+% setOccupancy(map, D, 1)
+
+
+inflate(map,1)
